@@ -22,7 +22,7 @@
 #include "rt.h"
 #include "externs.h"
 
-#define VERSION "1.01"
+#define VERSION "1.1"
 
 /*
  * Usage() - Print usage and exit.
