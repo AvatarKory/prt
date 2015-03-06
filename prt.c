@@ -80,7 +80,7 @@ void Dead_baby(int x)
     int status;
 
     wait(&status);
-    signal(SIGCLD, Dead_baby);
+    signal(SIGCHLD, Dead_baby);
 }
 
 
@@ -556,7 +556,7 @@ int main(int argc, char *argv[])
     ++argv;
     --argc;
 
-    signal(SIGCLD, Dead_baby);
+    signal(SIGCHLD, Dead_baby);
 
     /*
     ** Get the list of hosts from the command line.
