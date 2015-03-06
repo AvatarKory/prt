@@ -30,13 +30,16 @@ def JoinAndWrite(token, data, lineCount = 0):
         lineNum += 1
 
 def SurfaceWrite(data):
-    outf.write("surface 1 1 1 %s  1 1 1 %s %g %g %g   %g %g %g  1 1 1  %s %s\n" % \
+    outf.write("surface 1 1 1 %s 1 1 1 %s %g %g %g %g %g %g 1 1 1  %s %s\n" % \
                (data[5], data[7], \
                 float(data[1]) * 0.3, float(data[2]) * 0.3, float(data[3]) * 0.3, \
                 float(data[1]) * 0.7, float(data[2]) * 0.7, float(data[3]) * 0.7, \
                 data[6], data[8]))
 
 
+#
+# Start here
+#
 if len(sys.argv) != 3:
     print "usage: nff2prt nff-file-name prt-file-name"
     sys.exit( 1 )
@@ -62,7 +65,6 @@ while True:
     l = inf.readline()
     if not l:
         break
-#    print l
 
     lineNum += 1
 
@@ -76,7 +78,6 @@ while True:
     # convert the keyword to lower case so we can do
     # a case insensitive string compare
     k = t[0].lower()
-    print k, len(t)
 
     # now parse each line based on the keyword
     if k == "viewpoint" or k == "v":
