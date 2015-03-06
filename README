@@ -1,12 +1,12 @@
 
-                      prt: A parallel raytracer.
-                   Copyright (C) 1990-2015, Kory Hamzeh
+prt: A parallel raytracer.
+Copyright (C) 1990-2015, Kory Hamzeh
 
 
 Version 1.1 Release Notes
 ================
 
-The following changes were made to release 1,1 of PRT:
+The following changes were made to release 1.1 of PRT:
 
 1. The output image format was changed from the MTV format to the
 Portable Pixmap (PPM). You need to install the netpbm, and possibly the
@@ -16,7 +16,7 @@ prt's ppm output image to other formats.
 
 2. The NFF to PRT converter utility was re-written in Python and it was
 renamed from nffconv to nff2prt. You will need to install the python
-package to use that utilitiy. Almost all Unix/Linux distro's (including
+package to use that utilitiy. Almost all Unix/Linux distros (including
 OS/X come with Python pre-installed).
 
 3. Due to security concerns, prt now defaults to 'ssh' instead of 'rsh'. You
@@ -36,7 +36,7 @@ if the exponent is not an integer, NaN is returned. So rt now rounds the
 value to the nearest integer number.
 
 6. A -V (upper case V) was added to both prt and rt. When invoked with
-this command line option, the programs version number is printed and
+this command line option, the program's version number is printed and
 the application exits.
 
 Version 1.0 Release Notes
@@ -47,7 +47,7 @@ This is the first release of prt, and for that very reason, it's version 1.0.
 Prt is a parallel raytracer I wrote which will run across machines that 
 are networked together via TCP/IP. Prt consists of two programs:
 
-	- prt: the front end system
+	- prt: the front end system.
 	- rt: the raytracing engine.
 
 Prt requires the name of the input file, output image file name, and a list
@@ -149,7 +149,7 @@ exit if your input database contains any polygon patches.
 
 Usage for nffconv is:
 
-	nffconv <input-file >output-file.
+	nffconv <input-file> output-file.
 
 
 FUTURE PLANS
@@ -173,7 +173,7 @@ early on in the design of the raytracer engine.
 
 Please report bugs/patches/etc to me at:
 
-	kory@avatar.com
+	kory@avatarci.com
 
 I am very intereseted to hear what kind of images you have done and what kind
 of performance you have achieved.
@@ -183,5 +183,5 @@ them and make them available to others.
 
 Enjoy and happy tracing,
 --kory
-kory@avatar.com
+kory@avatarci.com
 
