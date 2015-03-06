@@ -94,9 +94,11 @@ int Find_axis(int first, int last)
  */
 
 
-int Compslabs(OBJECT **a, OBJECT **b)
+static int Compslabs(void *p1, void *p2)
 {
     double          am = 0, bm = 0;
+    OBJECT	**a = (OBJECT **) p1;
+    OBJECT	**b = (OBJECT **) p2;
 
     switch (axis)
     {
