@@ -94,7 +94,7 @@ int Find_axis(int first, int last)
  */
 
 
-static int Compslabs(void *p1, void *p2)
+static int Compslabs(const void *p1, const void *p2)
 {
     double          am = 0, bm = 0;
     OBJECT	**a = (OBJECT **) p1;
@@ -142,7 +142,7 @@ int Sort_split(int first, int last)
     qsort((char *) (objects + first), 
 	  size, 
 	  sizeof(OBJECT *), 
-	  (__compar_fn_t) Compslabs);
+	  Compslabs);
 
     if (size <= GROUP_SIZE)
     {
