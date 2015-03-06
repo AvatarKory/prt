@@ -68,7 +68,7 @@ fd_set orig_fds;
 long time_st;
 long time_en;
 char *rt_args[32];
-
+char *rshell = "ssh";
 /*
 ** Dead_baby()
 **
@@ -172,10 +172,11 @@ void Kill_tracers(int count)
 
 void Start_tracers(void)
 {
-    int rc, h, in_fd, i;
-    char starty[32], incy[32];
+    int rc, h, in_fd, i, arg_ndx;
+    char starty[32], incy[32], *prog;
 
-
+    /* iterate through the list of all of the hosts and start
+       an rt task */
     for(h = 0; h < num_hosts; h++)
     {
 	/* First, create the pipe. */
@@ -234,11 +235,24 @@ void Start_tracers(void)
 	    rt_args[5] = starty;
 	    rt_args[6] = incy;
 
-	    /* exec the sucker */
-	    execvp("rsh", rt_args);
+	    /* If we are running an instance of rt locally (i.e. hostname == 'localhost"),
+	       we don't need to stat rsh. Just exec rt directly */
 
-	    fprintf(stderr, "%s: rsh on host %s failed.\n", my_name,
-		    rt_tab[h].hostname); 
+	    if(!strcmp(rt_tab[h].hostname, "localhost"))
+	    {
+		prog = "rt";
+		arg_ndx = 2;
+	    }
+	    else
+	    {
+		prog = rshell;
+		arg_ndx = 0;
+	    }
+
+	    execvp(prog, &rt_args[ arg_ndx ]);
+
+	    fprintf(stderr, "%s: starting %s on host %s failed.\n", my_name,
+		    prog, rt_tab[h].hostname); 
 	    exit(1);
 	}
     }
@@ -494,23 +508,30 @@ int main(int argc, char *argv[])
     ** Check for the verbose option.
     */
 
-    if(!strcmp(argv[0], "-v"))
+    while(argc > 3)
     {
-	verbose = 1;
-	++argv;
-	--argc;
-    }
-
-    if(!strcmp(argv[0], "-V"))
-    {
-	printf("prt version %s\n", VERSION);
-	exit(0);
+	if(!strcmp(argv[0], "-v"))
+	{
+	    verbose = 1;
+	    ++argv;
+	    --argc;
+	}
+	else if(!strcmp(argv[0], "--shell"))
+	{
+	    rshell = argv[1];
+	    argv += 2;
+	    argc -= 2;
+	}
+	else
+	{
+	    break;
+	}
     }
 
     if(argc < 2)
 	Usage();
 
-    rt_args[0] = "rsh";
+    rt_args[0] = rshell;
     rt_args[2] = "rt";
     rt_args[3] = "-z";
     rt_args[4] = "-y";
