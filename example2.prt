@@ -1,0 +1,234 @@
+#
+from 2 2 5
+at 2 2 0
+up 0 1 0
+angle 40 
+resolution 512 512 
+background .3 .3 .9 n
+light 6 6 8 
+light -4 7 8
+#
+#
+instance tile
+polygon 4
+0 0 0
+0.25 0 0
+0.25 0 0.25
+0 0 0.25
+polygon 4
+0.25 0 0.25
+0.50 0 0.25
+0.50 0 0.50
+0.25 0 0.50
+end_instance
+#
+# floor
+#
+surface 1 1 1 .9  0 0 0 0  .4 .4 .4   .5 .5 .5  1 1 1  30 0
+sphere 1.8 2.4 1 0.7
+surface 1 1 1 .7  0 0 0 0  .1 .1 .1  .1 .1 .1   1 1 1  30 0
+cone 
+3.5 1.5 1 0.3   
+2.5 1.5 -0.5 0.3
+surface 1 1 1 0.2 1 1 1 0.9 0 0 0 0 0 0 1 1 1 40 1.5
+sphere 0.8 1.5 1 0.4
+#
+surface 0 0 0 0  0 0 0 0  0 .4 .4  0 .5 .5  0 0 0 0 0
+polygon 4
+-1 0.999 -4
+5 0.999 -4
+5 0.999 4
+-1 0.999 4
+surface 0 0 0 0  0 0 0 0  .4 0 0    .55 0 0  0 0 0 0 0
+instance_of tile -1 1 -4
+instance_of tile -0.5 1 -4
+instance_of tile 0 1 -4
+instance_of tile 0.5 1 -4
+instance_of tile 1 1 -4
+instance_of tile 1.5 1 -4
+instance_of tile 2 1 -4
+instance_of tile 2.5 1 -4
+instance_of tile 3 1 -4
+instance_of tile 3.5 1 -4
+instance_of tile 4 1 -4
+instance_of tile 4.5 1 -4
+instance_of tile -1 1 -3.5
+instance_of tile -0.5 1 -3.5
+instance_of tile 0 1 -3.5
+instance_of tile 0.5 1 -3.5
+instance_of tile 1 1 -3.5
+instance_of tile 1.5 1 -3.5
+instance_of tile 2 1 -3.5
+instance_of tile 2.5 1 -3.5
+instance_of tile 3 1 -3.5
+instance_of tile 3.5 1 -3.5
+instance_of tile 4 1 -3.5
+instance_of tile 4.5 1 -3.5
+instance_of tile -1 1 -3
+instance_of tile -0.5 1 -3
+instance_of tile 0 1 -3
+instance_of tile 0.5 1 -3
+instance_of tile 1 1 -3
+instance_of tile 1.5 1 -3
+instance_of tile 2 1 -3
+instance_of tile 2.5 1 -3
+instance_of tile 3 1 -3
+instance_of tile 3.5 1 -3
+instance_of tile 4 1 -3
+instance_of tile 4.5 1 -3
+instance_of tile -1 1 -2.5
+instance_of tile -0.5 1 -2.5
+instance_of tile 0 1 -2.5
+instance_of tile 0.5 1 -2.5
+instance_of tile 1 1 -2.5
+instance_of tile 1.5 1 -2.5
+instance_of tile 2 1 -2.5
+instance_of tile 2.5 1 -2.5
+instance_of tile 3 1 -2.5
+instance_of tile 3.5 1 -2.5
+instance_of tile 4 1 -2.5
+instance_of tile 4.5 1 -2.5
+instance_of tile -1 1 -2
+instance_of tile -0.5 1 -2
+instance_of tile 0 1 -2
+instance_of tile 0.5 1 -2
+instance_of tile 1 1 -2
+instance_of tile 1.5 1 -2
+instance_of tile 2 1 -2
+instance_of tile 2.5 1 -2
+instance_of tile 3 1 -2
+instance_of tile 3.5 1 -2
+instance_of tile 4 1 -2
+instance_of tile 4.5 1 -2
+instance_of tile -1 1 -1.5
+instance_of tile -0.5 1 -1.5
+instance_of tile 0 1 -1.5
+instance_of tile 0.5 1 -1.5
+instance_of tile 1 1 -1.5
+instance_of tile 1.5 1 -1.5
+instance_of tile 2 1 -1.5
+instance_of tile 2.5 1 -1.5
+instance_of tile 3 1 -1.5
+instance_of tile 3.5 1 -1.5
+instance_of tile 4 1 -1.5
+instance_of tile 4.5 1 -1.5
+instance_of tile -1 1 -1
+instance_of tile -0.5 1 -1
+instance_of tile 0 1 -1
+instance_of tile 0.5 1 -1
+instance_of tile 1 1 -1
+instance_of tile 1.5 1 -1
+instance_of tile 2 1 -1
+instance_of tile 2.5 1 -1
+instance_of tile 3 1 -1
+instance_of tile 3.5 1 -1
+instance_of tile 4 1 -1
+instance_of tile 4.5 1 -1
+instance_of tile -1 1 -0.5
+instance_of tile -0.5 1 -0.5
+instance_of tile 0 1 -0.5
+instance_of tile 0.5 1 -0.5
+instance_of tile 1 1 -0.5
+instance_of tile 1.5 1 -0.5
+instance_of tile 2 1 -0.5
+instance_of tile 2.5 1 -0.5
+instance_of tile 3 1 -0.5
+instance_of tile 3.5 1 -0.5
+instance_of tile 4 1 -0.5
+instance_of tile 4.5 1 -0.5
+instance_of tile -1 1 0
+instance_of tile -0.5 1 0
+instance_of tile 0 1 0
+instance_of tile 0.5 1 0
+instance_of tile 1 1 0
+instance_of tile 1.5 1 0
+instance_of tile 2 1 0
+instance_of tile 2.5 1 0
+instance_of tile 3 1 0
+instance_of tile 3.5 1 0
+instance_of tile 4 1 0
+instance_of tile 4.5 1 0
+instance_of tile -1 1 0.5
+instance_of tile -0.5 1 0.5
+instance_of tile 0 1 0.5
+instance_of tile 0.5 1 0.5
+instance_of tile 1 1 0.5
+instance_of tile 1.5 1 0.5
+instance_of tile 2 1 0.5
+instance_of tile 2.5 1 0.5
+instance_of tile 3 1 0.5
+instance_of tile 3.5 1 0.5
+instance_of tile 4 1 0.5
+instance_of tile 4.5 1 0.5
+instance_of tile -1 1 1
+instance_of tile -0.5 1 1
+instance_of tile 0 1 1
+instance_of tile 0.5 1 1
+instance_of tile 1 1 1
+instance_of tile 1.5 1 1
+instance_of tile 2 1 1
+instance_of tile 2.5 1 1
+instance_of tile 3 1 1
+instance_of tile 3.5 1 1
+instance_of tile 4 1 1
+instance_of tile 4.5 1 1
+instance_of tile -1 1 1.5
+instance_of tile -0.5 1 1.5
+instance_of tile 0 1 1.5
+instance_of tile 0.5 1 1.5
+instance_of tile 1 1 1.5
+instance_of tile 1.5 1 1.5
+instance_of tile 2 1 1.5
+instance_of tile 2.5 1 1.5
+instance_of tile 3 1 1.5
+instance_of tile 3.5 1 1.5
+instance_of tile 4 1 1.5
+instance_of tile 4.5 1 1.5
+instance_of tile -1 1 2
+instance_of tile -0.5 1 2
+instance_of tile 0 1 2
+instance_of tile 0.5 1 2
+instance_of tile 1 1 2
+instance_of tile 1.5 1 2
+instance_of tile 2 1 2
+instance_of tile 2.5 1 2
+instance_of tile 3 1 2
+instance_of tile 3.5 1 2
+instance_of tile 4 1 2
+instance_of tile 4.5 1 2
+instance_of tile -1 1 2.5
+instance_of tile -0.5 1 2.5
+instance_of tile 0 1 2.5
+instance_of tile 0.5 1 2.5
+instance_of tile 1 1 2.5
+instance_of tile 1.5 1 2.5
+instance_of tile 2 1 2.5
+instance_of tile 2.5 1 2.5
+instance_of tile 3 1 2.5
+instance_of tile 3.5 1 2.5
+instance_of tile 4 1 2.5
+instance_of tile 4.5 1 2.5
+instance_of tile -1 1 3
+instance_of tile -0.5 1 3
+instance_of tile 0 1 3
+instance_of tile 0.5 1 3
+instance_of tile 1 1 3
+instance_of tile 1.5 1 3
+instance_of tile 2 1 3
+instance_of tile 2.5 1 3
+instance_of tile 3 1 3
+instance_of tile 3.5 1 3
+instance_of tile 4 1 3
+instance_of tile 4.5 1 3
+instance_of tile -1 1 3.5
+instance_of tile -0.5 1 3.5
+instance_of tile 0 1 3.5
+instance_of tile 0.5 1 3.5
+instance_of tile 1 1 3.5
+instance_of tile 1.5 1 3.5
+instance_of tile 2 1 3.5
+instance_of tile 2.5 1 3.5
+instance_of tile 3 1 3.5
+instance_of tile 3.5 1 3.5
+instance_of tile 4 1 3.5
+instance_of tile 4.5 1 3.5

@@ -1,0 +1,149 @@
+
+                      prt: A parallel raytracer.
+                   Copyright (C) 1990-2015, Kory Hamzeh
+
+INTRODUCTION
+
+This is the first release of prt, and for that very reason, it's version 1.0. 
+
+Prt is a parallel raytracer I wrote which will run across machines that 
+are networked together via TCP/IP. Prt consists of two programs:
+
+	- prt: the front end system
+	- rt: the raytracing engine.
+
+Prt requires the name of the input file, output image file name, and a list
+of hosts which will run rt. It then uses rsh to start rt on the given hosts.
+Rt reads the input file from its standard in and pipes the image back to
+prt on its standard out. Prt also monitors the standard error stream for
+error/diagnostics from rt.
+
+Using rsh might not be the most efficient way to run parallel processes, but
+it's simple and very portable. I've run prt on up to 5 Sun SPARCstations and
+have gotten excellent performance. The speed improvement is very close to
+linear as the number of hosts increase.
+
+In this archive set, there is a file named FORMAT which contains the prt
+input database format. Please read it.
+
+I have also included two example input files: example1.dat and example2.dat.
+I have many more available. Contact me if you are interested.
+
+
+BUILDING PRT
+
+To build prt, make sure you have unshared all of the shar files. Then type:
+
+	make prt
+
+It should require very little or no change on most BSD systems. Prt uses
+the select system call, so make sure your system supports it (all BSD and
+most System V systems now have a select system call).
+
+Next, you need to build rt on all of the hosts which you plan to use. Copy
+the files on all of the hosts you want to use, and type:
+
+	make rt
+
+I have also written a program called nffconv which converts input
+databases in NFF format to a prt format. To build nffconv, type:
+
+	make nffconv
+
+The SURFACE primitive in prt is much more robust than that of NFF ray-
+tracers. You might have to tweak the outfile of nffconv to get a pretty
+picture.
+
+
+RUNNING PRT
+
+Before you run prt, make sure that:
+
+	1. You have built rt on all of the target hosts.
+	2. You have an account on all of the target hosts and can run rsh.
+	3. Rsh does not produce any more output other than the output
+	   of the program. Type:
+
+		rsh <hostname> rt
+
+	   then type a Control-D character. All you should see is:
+
+		rt: no light sources were specified.
+
+	   If you see any other output (including a request for password
+	   prompt), then you need to correct it. 
+
+Prt has the following usage format:
+
+	prt [-v] [-s] [-l] [-r] [-c sample_count] input-file
+		output-file host [host ... ]
+
+The options are:
+
+	-v	Verbose mode. Good for debugging and impatient people.
+
+	-s	Don't trace shadow rays. For testing an object database.
+
+	-l	Don't trace reflected rays. For testing an object database.
+
+	-r	Don't trace refracted rays. For testing an object database.
+
+	-c	This option specifies the number of samples per pixel 
+		for stochastic sampling. The default is 1 (no sampling).
+
+Since prt uses two pipes per rt connection, you can specify up to 30 hosts
+on the command line. I am trying to figure out a way to increase this. If 
+anyone has any ideas, please let me know.
+
+You can run rt directly if you want. It has the same usage format as prt
+with the exception of the host list. Rt has several more options that are
+only used when started by prt. If you are interested, look in main.c.
+
+RUNNING NFFCONV
+
+Nffconv makes a good faith attempt at converting NFF formatted files to
+a format that prt can use. By "good faith" I mean that it makes a lot of
+assumptions about the surface properties. Prt's surface properties are more
+robust than NFF's.
+
+Since prt does not yet handle polygon patches, nnfconv will complain and
+exit if your input database contains any polygon patches.
+
+Usage for nffconv is:
+
+	nffconv <input-file >output-file.
+
+
+FUTURE PLANS
+
+Since this is the first public release of prt, I expect that there are some
+bugs/portability issues. The next release should be less buggy/more portable.
+I would like to add the torus object type and polygon patches. The only reason 
+that these two objects haven't been added yet is because the math required is
+beyond me at this point. I also have come up with a much better load balancing 
+scheme which will adjust the load on a per machine basis in real time. I have 
+not had a chance to implement this.
+
+
+ACKNOWLEDGEMENTS
+
+The code for cone intersection and building the bounding boxes were pretty
+much lifted from the MTV raytracer. Mark, I hope you don't mind.
+
+I would also like to thank Eric Haines and George Kyriazis for their help 
+early on in the design of the raytracer engine.
+
+Please report bugs/patches/etc to me at:
+
+	kory@avatar.com
+
+I am very intereseted to hear what kind of images you have done and what kind
+of performance you have achieved.
+
+If you create cool object files, please send me a copy so that I can archive
+them and make them available to others.
+
+Enjoy and happy tracing,
+--kory
+kory@avatar.com
+

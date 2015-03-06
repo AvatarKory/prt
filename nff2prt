@@ -1,0 +1,117 @@
+#!/usr/bin/env python
+
+# nff2prt
+#
+# This script converts NFF formatted files to the PRT format.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import sys
+
+lineNum = 0
+outf = 0
+intf = 0
+
+def JoinAndWrite(token, data, lineCount = 0):
+    global lineNum
+
+    data[0] = token;
+    outf.write(" ".join(data) + "\n")
+    lineCount = int(lineCount)
+    while lineCount > 0:
+        outf.write(inf.readline())
+        lineCount -= 1
+        lineNum += 1
+
+def SurfaceWrite(data):
+    outf.write("surface 1 1 1 %s  1 1 1 %s %g %g %g   %g %g %g  1 1 1  %s %s\n" % \
+               (data[5], data[7], \
+                float(data[1]) * 0.3, float(data[2]) * 0.3, float(data[3]) * 0.3, \
+                float(data[1]) * 0.7, float(data[2]) * 0.7, float(data[3]) * 0.7, \
+                data[6], data[8]))
+
+
+if len(sys.argv) != 3:
+    print "usage: nff2prt nff-file-name prt-file-name"
+    sys.exit( 1 )
+
+# open input NFF file
+try:
+    inf = open(sys.argv[1], "r")
+
+except:
+    print "Can't open input file %s!\n" % sys.argv[1]
+    sys.exit( 1 )
+
+# create PRT output file
+try:
+    outf = open(sys.argv[2], "w")
+
+except:
+    print "Can't create output file %s!\n" % sys.argv[2]
+    sys.exit( 1 )
+
+
+while True:
+    l = inf.readline()
+    if not l:
+        break
+#    print l
+
+    lineNum += 1
+
+    # split the line to token using white space as the delimeter
+    t = l.split()
+
+    # skip blank lines and line that begin with '#' (comment)
+    if len(t) == 0 or t[0][0] == '#':
+        continue;
+
+    # convert the keyword to lower case so we can do
+    # a case insensitive string compare
+    k = t[0].lower()
+    print k, len(t)
+
+    # now parse each line based on the keyword
+    if k == "viewpoint" or k == "v":
+        pass
+    elif k == "from":
+        outf.write(l)
+    elif k == "at":
+        outf.write(l)
+    elif k == "up":
+        outf.write(l)
+    elif k == "angle":
+        outf.write(l)
+    elif k == "hither":
+        pass
+    elif k == "resolution":
+        outf.write(l)
+    elif k == "light" or k == "l":
+        JoinAndWrite("light", t)
+    elif k == "background" or k == "b":
+        t  += 'n'
+        JoinAndWrite("background", t)
+    elif k == "surface" or k == "f":
+        SurfaceWrite(t)
+    elif k == "cone" or k == "c":
+        JoinAndWrite("cone", t)
+    elif k == "sphere" or k == "s":
+        JoinAndWrite("sphere", t)
+    elif k == "poly" or k == "p":
+        JoinAndWrite("polygon", t, t[1])
+    elif k == "ppatch" or k == "pp":
+        JoinAndWrite("polygon", t, t[1])
+    else:
+        print l
+        print "Unexpected keyword on line %d of input file\n" % lineNum
+        sys.exit( 1 )
+
+sys.exit( 0 )
+
