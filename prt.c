@@ -233,7 +233,7 @@ void Start_tracers(void)
 
 	    rt_args[1] = rt_tab[h].hostname;
 	    rt_args[5] = starty;
-	    rt_args[6] = incy;
+	    rt_args[7] = incy;
 
 	    /* If we are running an instance of rt locally (i.e. hostname == 'localhost"),
 	       we don't need to stat rsh. Just exec rt directly */
@@ -535,8 +535,9 @@ int main(int argc, char *argv[])
     rt_args[2] = "rt";
     rt_args[3] = "-z";
     rt_args[4] = "-y";
+    rt_args[6] = "-i";
 
-    i = 7;
+    i = 8;
     rt_args[i] = NULL;
     while(argc > 2 && *argv[0] == '-')
     {

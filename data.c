@@ -17,8 +17,8 @@
 
 int             verbose = 0;
 char           *my_name;
-char            input_file[64];
-char            output_file[64];
+char            input_file[64] = "";
+char            output_file[64] = "";
 int             nlights = 0;
 int             nobjects = 0;
 int             shadow = 1;
@@ -27,6 +27,7 @@ int             refract = 1;
 int		y_start = 0;
 int		y_inc = 1;
 int		do_image_size = 1;
+int		use_stdio = 0;
 
 VIEW_INFO       view;
 SURFACE        *cur_surface;
@@ -40,6 +41,7 @@ INSTANCE       *instances[MAX_INSTANCE];
 int             num_instance = 0;
 int             stack_cnt = 0;
 int             sample_cnt = 1;
+int		 num_threads = 1;
 
 int             n_rays = 0;
 int             n_intersects = 0;

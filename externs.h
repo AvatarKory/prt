@@ -14,18 +14,19 @@
  *
  */
 
-extern int      verbose;
-extern char    *my_name;
-extern char     input_file[];
-extern char     output_file[];
-extern int      nlights;
-extern int      nobjects;
-extern int      shadow;
-extern int      reflect;
-extern int      refract;
-extern int	y_start;
-extern int	y_inc;
+extern int		verbose;
+extern char	*my_name;
+extern char	input_file[];
+extern char	output_file[];
+extern int		nlights;
+extern int		nobjects;
+extern int		shadow;
+extern int		reflect;
+extern int		refract;
+extern int		y_start;
+extern int		y_inc;
 extern int 	do_image_size;
+extern int		use_stdio;
 
 extern VIEW_INFO view;
 extern SURFACE *cur_surface;
@@ -39,6 +40,7 @@ extern INSTANCE *instances[];
 extern int      num_instance;
 extern int      stack_cnt;
 extern int      sample_cnt;
+extern int	     num_threads;
 extern int      n_rays;
 extern int      n_intersects;
 extern int      n_shadows;

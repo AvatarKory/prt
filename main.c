@@ -14,15 +14,69 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <libgen.h>
+#include <getopt.h>
 
 #include "rt.h"
 #include "externs.h"
 
-#define VERSION "1.1"
+#define VERSION "1.02"
+
+// Support command line options (passed to getopt())
+const struct option long_options[] = {
+    {"help",			no_argument,           0, 'h'},
+    {"version",			no_argument,           0, 'V'},
+    {"verbose",			no_argument,           0, 'v'},
+    {"no-shadow",		no_argument,           0, 's'},
+    {"no-reflection",		no_argument,           0, 'l'},
+    {"no-refraction",		no_argument,           0, 'r'},
+    {"no-sample",		no_argument,           0, 'd'},
+    {"no-image-header",	no_argument,           0, 'z'},
+    {"sample-count",		required_argument,  0, 'c'},
+    {"start-y",			required_argument,  0, 'y'},
+    {"inc-y",			required_argument,  0, 'i'},
+    {"threads",			required_argument,  0, 't'},
+    {0, 0, 0,  0}
+};
+
+const char *help_msg =
+    "Usage: %s [options] [input-data-file output-image-file]\n"
+    "\n"
+    "Where options is 0 or more of:\n"
+    "\n"
+    "    -h, --help\n"
+    "        Print this message and exit\n\n"
+    "    -V, --version\n"
+    "        Print the version number and exit\n\n"
+    "    -v, --verbose\n"
+    "        Turn on verbose output mode\n\n"
+    "    -s, --no-shadow\n"
+    "        Disable checking for shadow rays\n\n"
+    "    -l, --no-reflection\n"
+    "        Disable checking for reflected rays\n\n"
+    "    -r, --no-refraction\n"
+    "        Disable checking for refracted rays\n\n"
+    "    -d, --no-sample\n"
+    "        Disable pixel sampling\n\n"
+    "    -z, --no-image-header\n"
+    "        Don't write the PPM image header, just the pixels\n\n"
+    "    -c count, --sample-count count\n"
+    "        Set sample count per pixel to 'count'\n\n"
+    "    -y starty --start-y starty \n"
+    "        Set the starting image row to 'starty'. This option\n"
+    "        is used when rt is invoked by prt.\n\n"
+    "    -i inc-y, --start-y inc-y\n"
+    "        Set the increment count per row (image row skip count)\n"
+    "        to 'incy'. This option is used when rt is invoked by prt.\n\n"
+    "    -t thread-count, --threads thread-count\n"
+    "        Set the number of ray tracer threads to 'thread_count' for this\n"
+    "        process. Not fully implemented or debugged!\n"
+    "\n";
 
 /*
  * Usage() - Print usage and exit.
@@ -30,122 +84,139 @@
 
 void Usage()
 {
-    fprintf(stderr, 
-	    "Usage: %s: [-V] [-v] [-s] [-l] [-r] [-d] [-z] [-c sample_count]\n", my_name);
-    fprintf(stderr, 
-	    "           [-y y_start y_inc]  [input-file output-file]\n");
+    fprintf(stderr, help_msg, my_name);
     exit(1);
+}
+
+void bad_opt_value(char *opt_name)
+{
+    fprintf(stderr, "%s: bad %s value: %s\n\n", my_name, opt_name, optarg);
+    Usage();
 }
 
 int main(int argc, char *argv[])
 {
-    long            timest, timeend;
-    int             i;
+    long		timest, timeend;
+    int		i;
+    int		c;
 
     time(&timest);
 
-    my_name = argv[0];
+    my_name = basename( argv[ 0 ] );	
 
     /*
      * check command line options
      */
 
-    ++argv;
-    --argc;
-    while (argc > 0 && *argv[0] == '-')
+    while (1)
     {
-	if (!strcmp(*argv, "-v"))	/* verbose mode		 */
+	int option_index = 0;
+
+
+	c = getopt_long(argc, argv, "hvVslrdzc:y:i:t:",
+			long_options, &option_index);
+
+	if (c == -1)
 	{
+	    break;
+	}
+
+	switch( c )
+	{
+	case 'h':
+	    Usage();
+	    break;
+
+	case 'v':
 	    verbose = 1;
-	    --argc;
-	    ++argv;
-	}
-	else if(!strcmp(argv[0], "-V"))
-	{
-	    printf("rt version %s\n", VERSION);
+	    break;
+
+	case 'V':
+	    printf("rt Version %s, Copyright (C) 1990-2015, Kory Hamzeh\n", VERSION);
 	    exit(0);
-	}
-	else if (!strcmp(*argv, "-s"))	/* shadows off		 */
-	{
+
+	case 's':
 	    shadow = 0;
-	    --argc;
-	    ++argv;
-	}
-	else if (!strcmp(*argv, "-l"))	/* disable reflections	 */
-	{
+	    break;
+
+	case 'l':
 	    reflect = 0;
-	    --argc;
-	    ++argv;
-	}
-	else if (!strcmp(*argv, "-r"))	/* disable refractions	 */
-	{
+	    break;
+
+	case 'r':
 	    refract = 0;
-	    ++argv;
-	    --argc;
-	}
-	else if (!strcmp(*argv, "-d"))	/* disable sampling	 */
-	{
+	    break;
+
+	case 'd':
 	    sample_cnt = 0;
-	    ++argv;
-	    --argc;
-	}
-	else if (!strcmp(*argv, "-z"))	/* disable image size	 */
-	{
+	    break;
+
+	case 'z':
 	    do_image_size = 0;
-	    ++argv;
-	    --argc;
-	}
-	else if (!strcmp(*argv, "-c"))	/* sample count		 */
-	{
-	    ++argv;
-	    sample_cnt = atoi(*argv);
-	    ++argv;
-	    argc -= 2;
-	    if (sample_cnt < 0)
+	    break;
+
+	case 't':
+	    num_threads = atol( optarg );
+	    if( num_threads < 1 || num_threads > 256)
 	    {
-		fprintf(stderr, "%s: sample count must be > 0\n", my_name);
-		exit(1);
+		bad_opt_value("num-threads");
 	    }
-	}
-	else if (!strcmp(*argv, "-y"))	/* y start and inc */
-	{
-	    ++argv;
-	    y_start = atoi(*argv);
-	    ++argv;
-	    y_inc = atoi(*argv);
-	    ++argv;
-	    argc -= 3;
-	    if (y_start < 0 || y_inc < 1)
+	    break;
+
+	case 'c':
+	    sample_cnt = atol( optarg );
+	    if( sample_cnt < 1 )
 	    {
-		fprintf(stderr, "%s: bad y_start and y_inc\n", my_name);
-		exit(1);
+		bad_opt_value("sample count");
 	    }
-	}
-	else
-	{
+	    break;
+
+	case 'y':
+	    y_start = atoi( optarg );
+	    if (y_start < 0)
+	    {
+		bad_opt_value("start y");
+	    }
+	    break;
+
+	case 'i':
+	    y_inc = atoi( optarg );
+	    if (y_inc < 1)
+	    {
+		bad_opt_value("inc-y");
+	    }
+	    break;
+
+	default:
 	    Usage();
 	}
     }
 
-    if (argc == 0)
+    if (argc == optind)
     {
+	use_stdio = 1;
 	strcpy(input_file, "STDIN");
 	strcpy(output_file, "STDOUT");
     }
-    else if (argc == 2)
+    else if ((argc - optind) == 2)
     {
-	strcpy(input_file, argv[0]);
-	strcpy(output_file, argv[1]);
+	use_stdio = 0;
+	strcpy(input_file, argv[optind]);
+	strcpy(output_file, argv[optind + 1]);
 	strcat(output_file, ".ppm");
     }
     else
+    {
+	// At this point, there must have been either 0 or 2 CLI args. Anything
+	// else is an error
 	Usage();
+    }
 
     /*
      * Read the input file. Will exit on error.
      */
 
-    if (argc == 0)
+    if (use_stdio)
 	Read_input_file(NULL);
     else
 	Read_input_file(input_file);
@@ -180,7 +251,7 @@ int main(int argc, char *argv[])
      * Open the output file.
      */
 	
-    if (argc == 0)
+    if (use_stdio)
 	Init_output_file(NULL);
     else
 	Init_output_file(output_file);
@@ -191,7 +262,7 @@ int main(int argc, char *argv[])
 
     if (verbose)
     {
-	printf("%s: version %s\n", my_name, VERSION);
+	fprintf(stderr, "%s: version %s\n", my_name, VERSION);
 	fprintf(stderr, "%s: input file = %s\n", my_name, input_file);
 	fprintf(stderr, "%s: output file = %s\n", my_name, output_file);
 	fprintf(stderr, "%s: %d objects were specified\n", my_name, nobjects);
@@ -222,7 +293,7 @@ int main(int argc, char *argv[])
      * Close output file and exit
      */
 
-    if(argc == 0)
+    if(output_file[0] == 0)
 	Close_output_file(NULL);
     else
 	Close_output_file(output_file);
