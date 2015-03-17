@@ -16,6 +16,7 @@ YFLAGS=-d
 LDFLAGS=-g
 LIBS=-lm
 CC=gcc
+CPP=g++
 
 #
 # .h files go here

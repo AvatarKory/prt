@@ -88,7 +88,7 @@ void Usage()
     exit(1);
 }
 
-void bad_opt_value(char *opt_name)
+void bad_opt_value(const char *opt_name)
 {
     fprintf(stderr, "%s: bad %s value: %s\n\n", my_name, opt_name, optarg);
     Usage();

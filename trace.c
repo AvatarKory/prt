@@ -22,6 +22,16 @@
 
 COLOR           Trace_a_ray(), Background_color(), Illuminate();
 
+//
+// These variable are read-only to the tracer threads. They can only be modified
+// by the master thread before any of the tracer threads are created.
+//
+
+VECTOR		hor;
+VECTOR		ver;
+double		x_pw;
+double		y_pw;
+
 /*
  * Raytrace()
  * 
@@ -31,10 +41,10 @@ COLOR           Trace_a_ray(), Background_color(), Illuminate();
 void Raytrace()
 {
     RAY             ray;
-    double          xr, yr, x_step, y_step, x_pw, y_pw;
+    double          xr, yr, x_step, y_step;
     double          x_rand, y_rand;
     int             x, y;
-    VECTOR          hor, ver;
+
     COLOR           col, scol;
     long            ts, te;
     int             l_int, l_shad, l_refl, l_refr, s;
